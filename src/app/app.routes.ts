@@ -21,10 +21,6 @@ export const routes: Routes = [
 
     ]
   },
-  // {
-  //   path: `${RouterUrl.QUIZ_ASK}/:category`,
-  //   loadComponent: () => import('./shared/components/quiz/quiz.component').then(c => c.QuizComponent),
-  // },
   {
     path: RouterUrl.NOT_FOUND,
     loadComponent: () => import('./containers/not-found/not-found.component').then(c => c.NotFoundComponent)
