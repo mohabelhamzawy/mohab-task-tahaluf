@@ -8,16 +8,15 @@ export const routes: Routes = [
   },
   {
     path: RouterUrl.QUIZ,
-    loadComponent: () => import('./shared/components/quiz/quiz-landing/quiz-landing.component').then(c => c.QuizLandingComponent),
-
+    loadComponent: () => import('./shared/components/quiz-landing/quiz-landing.component').then(c => c.QuizLandingComponent),
     children: [
       {
         path: '',
-        loadComponent: () => import('./shared/components/quiz/quiz-info/quiz-info.component').then(c => c.QuizInfoComponent),
+        loadComponent: () => import('./shared/components/quiz-info/quiz-info.component').then(c => c.QuizInfoComponent),
       },
       {
         path: `${RouterUrl.QUIZ_ASK}/:category`,
-        loadComponent: () => import('./shared/components/quiz/quiz-ask/quiz-ask.component').then(c => c.QuizAskComponent),
+        loadComponent: () => import('./shared/components/quiz-ask/quiz-ask.component').then(c => c.QuizAskComponent),
       },
 
     ]
@@ -28,7 +27,7 @@ export const routes: Routes = [
   // },
   {
     path: RouterUrl.NOT_FOUND,
-    loadComponent: () => import('./core/components/not-found/not-found.component').then(c => c.NotFoundComponent)
+    loadComponent: () => import('./containers/not-found/not-found.component').then(c => c.NotFoundComponent)
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },

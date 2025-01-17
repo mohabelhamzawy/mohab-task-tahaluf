@@ -1,11 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {RouterUrl} from '../../../../core/enums/routes.enum';
+import {RouterUrl} from '../../../core/enums/routes.enum';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AskMultipleComponent} from '../ask-multiple/ask-multiple.component';
 import {AskBooleanComponent} from '../ask-boolean/ask-boolean.component';
 import {AskFreetextComponent} from '../ask-freetext/ask-freetext.component';
-import {QuestionsService} from '../../../../core/services/questions.service';
-import {QuestionType} from '../../../../core/enums/question.enum';
+import {QuestionsService} from '../../../core/services/questions.service';
+import {QuestionType} from '../../../core/enums/question.enum';
 
 @Component({
   selector: 'app-quiz-ask',

@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {HintComponent} from "../../hint/hint.component";
-import {QuestionsService} from '../../../../core/services/questions.service';
+import {HintComponent} from "../hint/hint.component";
+import {QuestionsService} from '../../../core/services/questions.service';
 
 @Component({
   selector: 'app-quiz-info',

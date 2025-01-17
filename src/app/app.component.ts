@@ -5,10 +5,11 @@ import {tap} from 'rxjs';
 import {HintComponent} from './shared/components/hint/hint.component';
 import {} from '@angular/common';
 import {ProgressComponent} from './shared/components/progress/progress.component';
+import {HeaderComponent} from './core/components/header/header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -18,10 +19,6 @@ export class AppComponent implements OnInit {
   questions: any;
   categoriesList: any[] = [];
 
-  // Data
-  title = 'QUIZ';
-
-  // Flags
 
   getCategories(): void {
     this.categoriesList = this.#questionsService.getCategories()

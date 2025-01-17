@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {ProgressComponent} from '../../progress/progress.component';
+import {ProgressComponent} from '../progress/progress.component';
 import {RouterOutlet} from '@angular/router';
 
 @Component({
