@@ -66,7 +66,7 @@ export class QuestionsService {
     this.#allQuestions = finalQuestions;
 
     const myMap = new Map();
-    this.getCategories().forEach((item: any) => myMap.set(item.id, this.getCategoryQuestions(item.id)) );
+    this.getCategories().forEach((item: any) => myMap.set(item.id, this.#setCategoryQuestions(item.id)) );
 
 
 
@@ -82,9 +82,15 @@ export class QuestionsService {
 
   updateQuestions(): void {}
 
-  getCategoryQuestions(categoryName: string): any[] {
+  #setCategoryQuestions(categoryName: string): any[] {
     return this.#allQuestions.filter((item: any) => {
       return this.#toCamelCase(item.category) === categoryName;
+    })
+  }
+
+  getCategoryQuestions(categoryName: string): any[] {
+    return this.#questions().get(categoryName).filter((item: any) => {
+      return !item.isResolved && this.#toCamelCase(item.category) === categoryName;
     })
   }
 

@@ -1,16 +1,18 @@
-<!--<h2 (click)="back()">back to Gategories</h2>-->
-
-
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10 text-center">
-      <h4 class="my-4">{{ allQuestions[currentQuestionIndex].question }}</h4>
 
+      @if (allQuestions.length) {
+        <h4 class="my-4">{{ allQuestions[currentQuestionIndex].question }}</h4>
 
-      @switch (allQuestions[currentQuestionIndex].type.toLowerCase()) {
-        @case (QuestionType.MULTIPLE) { <app-ask-multiple [options]="allQuestions[currentQuestionIndex].options"></app-ask-multiple> }
-        @case (QuestionType.BOOLEAN) { <app-ask-multiple [options]="allQuestions[currentQuestionIndex].options"></app-ask-multiple> }
-        @case (QuestionType.FREETEXT) { <app-ask-freetext></app-ask-freetext> }
+        @switch (allQuestions[currentQuestionIndex].type.toLowerCase()) {
+          @case (QuestionType.MULTIPLE) { <app-ask-multiple [options]="allQuestions[currentQuestionIndex].options"></app-ask-multiple> }
+          @case (QuestionType.BOOLEAN) { <app-ask-multiple [options]="allQuestions[currentQuestionIndex].options"></app-ask-multiple> }
+          @case (QuestionType.FREETEXT) { <app-ask-freetext></app-ask-freetext> }
+        }
+      } @else {
+        <h2 class="my-5">No Questions are available</h2>
+        <button (click)="back()" class="btn btn-warning btn-lg">Back to categories</button>
       }
 
     </div>
