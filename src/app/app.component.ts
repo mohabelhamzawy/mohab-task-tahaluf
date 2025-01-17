@@ -1,10 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 import {QuestionsService} from './core/services/questions.service';
-import {tap} from 'rxjs';
-import {HintComponent} from './shared/components/hint/hint.component';
-import {} from '@angular/common';
-import {ProgressComponent} from './shared/components/progress/progress.component';
 import {HeaderComponent} from './core/components/header/header.component';
 
 @Component({
@@ -16,7 +12,6 @@ import {HeaderComponent} from './core/components/header/header.component';
 export class AppComponent implements OnInit {
   // Injections
   #questionsService = inject(QuestionsService);
-  questions: any;
   categoriesList: any[] = [];
 
 
@@ -37,7 +32,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQuestions();
-    this.#questionsService.getTotalPoints()
-
+    this.#questionsService.getTotalPoints();
   }
 }

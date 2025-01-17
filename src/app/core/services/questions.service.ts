@@ -121,6 +121,9 @@ export class QuestionsService {
   }
 
   setTotalPoints(newScore: number) {
-    this.#currentScore.update(currentVal => currentVal + newScore);
+    this.#currentScore.update(currentVal => {
+      // Condition to make sure that maximum percentage will be 10%
+      return currentVal + newScore >= this.#totalScore() ? this.#totalScore() : currentVal + newScore
+    });
   }
 }
