@@ -1,0 +1,13 @@
+<h4 class="text-center pt-5 my-5">Please choose one of these category to start questions</h4>
+<div class="row justify-content-between">
+  @for (category of categoriesList; track category) {
+    <div class="col-6">
+      <app-hint
+        [color]="'primary text-center'"
+        [isClickable]="{available: true, id: category.id}"
+      >
+        <h4>{{ category.name }}</h4>
+      </app-hint>
+    </div>
+  }
+</div>

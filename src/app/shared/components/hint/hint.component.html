@@ -1,0 +1,9 @@
+<div
+  class="alert alert-{{color()}}"
+  [class.clickable]="isClickable().available"
+  role="alert"
+  (click)="route()"
+>
+<!--  <span class="badge bg-secondary">New</span>-->
+  <ng-content></ng-content>
+</div>
