@@ -1,16 +1,20 @@
-import {Injectable, signal} from '@angular/core';
+import {Injectable, linkedSignal, signal} from '@angular/core';
 import {QuestionsData} from '../api/questionsApi';
 import {QuestionCategory, QuestionDifficulty, QuestionType} from '../enums/question.enum';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class QuestionsService {
   #data = QuestionsData;
   #allQuestions: any[] = [];
   #questions = signal<any>(new Map());
 
-  #totalPoints = signal<number>(0);
+  // Progressbar Data
+  #totalScore = signal<number>(0);
+  #currentScore = signal<number>(0);
+  #percentageScore = linkedSignal<number>(() => (this.#currentScore() / 100) * this.#totalScore());
 
   constructor() { }
 
@@ -51,18 +55,14 @@ export class QuestionsService {
           item.score = 1;
       }
 
-      this.#totalPoints.update(currentVale => currentVale + item.score);
+      this.#totalScore.update(currentVale => currentVale + item.score);
 
       // item.category =  item.category.toLowerCase();
       item.isResolved = false;
 
-
-
-
       return item;
     })
 
-    this.#totalPoints.set((0 / 100) * this.#totalPoints());
     this.#allQuestions = finalQuestions;
 
     const myMap = new Map();
@@ -114,11 +114,10 @@ export class QuestionsService {
 
 
   getTotalPoints() {
-    console.log(this.#totalPoints)
-    return this.#totalPoints;
+    return this.#percentageScore;
   }
 
   setTotalPoints(newScore: number) {
-    this.#totalPoints.update(currentVal => currentVal + newScore);
+    this.#currentScore.update(currentVal => currentVal + newScore);
   }
 }

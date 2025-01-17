@@ -19,26 +19,35 @@ export class ProgressComponent implements OnChanges {
 
   constructor() {
     effect(() => {
-      this.value.set(this.questionsService.getTotalPoints()())
+      this.value.set(this.questionsService.getTotalPoints()());
+      this.setTypeColor();
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // this.setTypeColor();
+  ngOnChanges(): void {
+    this.setTypeColor();
   }
 
 
-  // setTypeColor() {
-  //   switch(this.value()) {
-  //     case this.value() <= 25:
-  //       this.type.set(ProgressType.WARNING)
-  //       break;
-  //     case y:
-  //       // code block
-  //       break;
-  //     default:
-  //     // code block
-  //   }
-  // }
+  setTypeColor(): void {
+    const value = this.value();
+
+    switch (true) {
+      case value >= 41 && value <= 80:
+        this.type.set(ProgressType.INFO);
+        break;
+      case value >= 81 && value <= 100:
+        this.type.set(ProgressType.SUCCESS);
+        break;
+      default:
+        this.type.set(ProgressType.WARNING);
+        break;
+    }
+
+
+
+
+
+  }
 
 }
