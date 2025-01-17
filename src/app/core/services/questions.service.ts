@@ -1,6 +1,6 @@
 import {Injectable, linkedSignal, signal} from '@angular/core';
 import {QuestionsData} from '../api/questionsApi';
-import {QuestionCategory, QuestionDifficulty, QuestionType} from '../enums/question.enum';
+import {QuestionDifficulty, QuestionPoint, QuestionType} from '../enums/question.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +45,14 @@ export class QuestionsService {
       }
 
       switch(item.difficulty.toLowerCase()) {
-        case QuestionDifficulty.MEDIUM:
-          item.score = 3;
-          break;
         case QuestionDifficulty.HARD:
-          item.score = 5;
+          item.score = QuestionPoint.HARD;
+          break;
+        case QuestionDifficulty.MEDIUM:
+          item.score = QuestionPoint.MEDIUM;
           break;
         default:
-          item.score = 1;
+          item.score = QuestionPoint.EASY;
       }
 
       this.#totalScore.update(currentVale => currentVale + item.score);
@@ -66,7 +66,7 @@ export class QuestionsService {
     this.#allQuestions = finalQuestions;
 
     const myMap = new Map();
-    this.getCategories().forEach((item: any) => myMap.set(item.name.toLowerCase(), this.getCategoryQuestions(item.name)) );
+    this.getCategories().forEach((item: any) => myMap.set(item.id, this.getCategoryQuestions(item.id)) );
 
 
 
@@ -82,9 +82,9 @@ export class QuestionsService {
 
   updateQuestions(): void {}
 
-  getCategoryQuestions(cat: QuestionCategory): any[] {
+  getCategoryQuestions(categoryName: string): any[] {
     return this.#allQuestions.filter((item: any) => {
-      return item.category.toLowerCase() === cat.toLowerCase()
+      return this.#toCamelCase(item.category) === categoryName;
     })
   }
 
@@ -99,19 +99,22 @@ export class QuestionsService {
     categories = [...new Set(categories)].map((item: any) => {
       return {
         name: item,
-        id: item.split(' ') // Split the string into an array by spaces
-          .map((word: string, index: number) =>
-            index === 0
-              ? word.toLowerCase() // Lowercase the first word
-              : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of subsequent words
-          )
-          .join('')
+        id: this.#toCamelCase(item)
       }
     });
 
     return [...categories];
   }
 
+  #toCamelCase(text: string): string {
+    return text.split(' ') // Split the string into an array by spaces
+      .map((word: string, index: number) =>
+        index === 0
+          ? word.toLowerCase() // Lowercase the first word
+          : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of subsequent words
+      )
+      .join('')
+  }
 
   getTotalPoints() {
     return this.#percentageScore;
