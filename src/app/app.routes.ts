@@ -8,7 +8,7 @@ export const routes: Routes = [
   },
   {
     path: RouterUrl.QUIZ,
-    loadComponent: () => import('./shared/components/quiz-landing/quiz-landing.component').then(c => c.QuizLandingComponent),
+    loadComponent: () => import('./containers/quiz/quiz.component').then(c => c.QuizComponent),
     children: [
       {
         path: '',
