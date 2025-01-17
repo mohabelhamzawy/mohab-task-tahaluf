@@ -14,7 +14,7 @@ export class QuestionsService {
   // Progressbar Data
   #totalScore = signal<number>(0);
   #currentScore = signal<number>(0);
-  #percentageScore = linkedSignal<number>(() => (this.#currentScore() / 100) * this.#totalScore());
+  #percentageScore = linkedSignal<number>(() => (this.#currentScore() /  this.#totalScore()) * 100);
 
   constructor() { }
 
