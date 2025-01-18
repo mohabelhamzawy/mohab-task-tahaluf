@@ -1,5 +1,6 @@
 import {Component, input, output} from '@angular/core';
 import {TitleCasePipe} from '@angular/common';
+import {AnswerEmitter} from '../../../core/types/general.type';
 
 @Component({
   selector: 'app-ask-multiple',
@@ -11,12 +12,10 @@ import {TitleCasePipe} from '@angular/common';
 })
 export class AskMultipleComponent {
   options = input<string[]>()
-  answerValue = output<string>();
-  selectedIndex: number = NaN;
-
+  answerValue = output<AnswerEmitter>();
+  selectedIndex = input<number>(NaN)
 
   sendAnswer(answer: string, index: number) {
-    this.answerValue.emit(answer);
-    this.selectedIndex = index;
+    this.answerValue.emit({answer, index});
   }
 }

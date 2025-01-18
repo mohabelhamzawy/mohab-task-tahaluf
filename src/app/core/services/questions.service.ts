@@ -1,38 +1,40 @@
 import {Injectable, linkedSignal, signal} from '@angular/core';
 import {QuestionsData} from '../api/questionsApi';
 import {QuestionDifficulty, QuestionPoint, QuestionType} from '../enums/question.enum';
+import {QuestionUpdates} from '../types/general.type';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class QuestionsService {
-  #data = QuestionsData;
-  #allQuestions: any[] = [];
-  #questions = signal<any>(new Map());
+  #apiData = QuestionsData;
+  #questionsArray: any[] = [];
+  #questionsMap = signal<any>(new Map());
 
   // Progressbar Data
   #totalScore = signal<number>(0);
   #currentScore = signal<number>(0);
   #percentageScore = linkedSignal<number>(() => (this.#currentScore() /  this.#totalScore()) * 100);
 
-  constructor() { }
 
+  // Questions Methods
   getQuestions(): any {
+    let id = 1;
     let finalQuestions: any = [];
-    const questions: any = [...this.#data];
+    const questions: any = [...this.#apiData];
     // result.categories = this.getCategories();
     finalQuestions = questions.map((item: any) => {
       if (item.type === QuestionType.MULTIPLE || QuestionType.BOOLEAN) {
         let options = [];
+        const correctAnswer = item.correct_answer.toLowerCase();
+
+        // Set Options by random sorting
         if (item.type === QuestionType.BOOLEAN) {
-          const correctAnswer = item.correct_answer.toLowerCase();
           const inCorrectAnswer = correctAnswer === 'true' ? 'false' : 'true';
           options = [correctAnswer, inCorrectAnswer].sort(() => Math.random() - 0.5);
-
         } else {
-          const correctAnswer = item.correct_answer.toLowerCase();
-          let inCorrectAnswers: string[] = item.incorrect_answers ? item.incorrect_answers.map((ele: string) => ele.toLowerCase()) : [];
+          const inCorrectAnswers: string[] = item.incorrect_answers ? item.incorrect_answers.map((ele: string) => ele.toLowerCase()) : [];
           options = [correctAnswer, ...inCorrectAnswers].sort(() => Math.random() - 0.5);
         }
         item.correct_answer = item.correct_answer.toLowerCase();
@@ -57,46 +59,57 @@ export class QuestionsService {
 
       this.#totalScore.update(currentVale => currentVale + item.score);
 
-      // item.category =  item.category.toLowerCase();
       item.isResolved = false;
+      item.id = id;
+      id++
+      item.userAnswer = '';
+      delete item.difficulty;
 
       return item;
     })
 
-    this.#allQuestions = finalQuestions;
+    this.#questionsArray = finalQuestions;
 
-    const myMap = new Map();
-    this.getCategories().forEach((item: any) => myMap.set(item.id, this.#setCategoryQuestions(item.id)) );
+    const questionsMap = new Map();
+    // Set Questions by random sorting
+    this.getCategories().forEach((item: any) => questionsMap.set(item.id, this.#setCategoryQuestions(item.id).sort(() => Math.random() - 0.5)) );
 
-
-
-
-    // console.log('all : ', finalQuestions)
-    // console.log('RAW : ', this.#data)
-    // console.log('ONE : ', this.#data[0])
-
-    this.#questions.set(myMap);
-    return this.#questions()
-    // return of(result);
+    // Final Data
+    this.#questionsMap.set(questionsMap);
+    return this.#questionsMap();
   }
 
-  updateQuestions(): void {}
+  updateQuestions(currentAnswer: QuestionUpdates | null = null): void {
+    if (currentAnswer) {
+      const categoryName = this.#toCamelCase(currentAnswer.category);
+      let categoryQuestions = this.#questionsMap().get(categoryName);
 
-  #setCategoryQuestions(categoryName: string): any[] {
-    return this.#allQuestions.filter((item: any) => {
-      return this.#toCamelCase(item.category) === categoryName;
-    })
+      categoryQuestions.forEach((item: any) => {
+        if (item.id === currentAnswer.id) {
+          const resolvedQuestion = Object.assign(item, {...currentAnswer});
+
+          this.setTotalPoints(
+            resolvedQuestion.userAnswer.toLowerCase() === resolvedQuestion.correct_answer.toLowerCase()
+              ? resolvedQuestion.score
+              : 0
+          );
+
+          resolvedQuestion.isResolved = true;
+
+          return resolvedQuestion;
+        } else {
+          return item
+        }
+      })
+    }
   }
 
-  getCategoryQuestions(categoryName: string): any[] {
-    return this.#questions().get(categoryName).filter((item: any) => {
-      return !item.isResolved && this.#toCamelCase(item.category) === categoryName;
-    })
-  }
 
+
+  // Categories Methods
   getCategories(): any[] {
     let categories: any = [];
-    this.#data.forEach((item: any) => {
+    this.#apiData.forEach((item: any) => {
       if (item && item.category) {
         categories.push(item.category);
       }
@@ -112,16 +125,15 @@ export class QuestionsService {
     return [...categories];
   }
 
-  #toCamelCase(text: string): string {
-    return text.split(' ') // Split the string into an array by spaces
-      .map((word: string, index: number) =>
-        index === 0
-          ? word.toLowerCase() // Lowercase the first word
-          : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of subsequent words
-      )
-      .join('')
+  getCategoryQuestions(categoryName: string): any[] {
+    return this.#questionsMap().get(categoryName).filter((item: any) => {
+      return !item.isResolved && this.#toCamelCase(item.category) === categoryName;
+    })
   }
 
+
+
+  // Points Methods
   getTotalPoints() {
     return this.#percentageScore;
   }
@@ -131,5 +143,21 @@ export class QuestionsService {
       // Condition to make sure that maximum percentage will be 10%
       return currentVal + newScore >= this.#totalScore() ? this.#totalScore() : currentVal + newScore
     });
+  }
+
+  #setCategoryQuestions(categoryName: string): any[] {
+    return this.#questionsArray.filter((item: any) => {
+      return this.#toCamelCase(item.category) === categoryName;
+    })
+  }
+
+  #toCamelCase(text: string): string {
+    return text.split(' ') // Split the string into an array by spaces
+      .map((word: string, index: number) =>
+        index === 0
+          ? word.toLowerCase() // Lowercase the first word
+          : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of subsequent words
+      )
+      .join('')
   }
 }
