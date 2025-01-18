@@ -6,14 +6,15 @@ import {AskFreetextComponent} from '../ask-freetext/ask-freetext.component';
 import {QuestionsService} from '../../../core/services/questions.service';
 import {QuestionType} from '../../../core/enums/question.enum';
 import {AnswerEmitter, QuestionUpdates} from '../../../core/types/general.type';
-import {NgClass} from '@angular/common';
+import {NgClass, TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-quiz-ask',
   imports: [
     AskMultipleComponent,
     AskFreetextComponent,
-    NgClass
+    NgClass,
+    TitleCasePipe
   ],
   templateUrl: './quiz-ask.component.html',
   styleUrl: './quiz-ask.component.scss'

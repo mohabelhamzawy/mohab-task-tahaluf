@@ -1,10 +1,12 @@
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-10 text-center">
+    <div class="col-md-12 text-center">
 
       @if (availableQuestions().length) {
         <h4 class="my-4">{{ currentQuestion().question }}</h4>
-        <h3>correct : {{currentQuestion().correct_answer}}</h3>
+        <div class="hint-answer">
+          <p class="mb-0">{{currentQuestion().correct_answer | titlecase}}</p>
+        </div>
 
         @switch (currentQuestion().type.toLowerCase()) {
           @case (QuestionType.MULTIPLE) {
