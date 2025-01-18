@@ -4,7 +4,6 @@
 
       @if (availableQuestions().length) {
         <h4 class="my-4">{{ currentQuestion().question }}</h4>
-        <h1 (click)="next()" [ngClass]="!isDisabledBtn()? 'text-bg-primary' : 'text-bg-secondary'">go next</h1>
         <h3>correct : {{currentQuestion().correct_answer}}</h3>
 
         @switch (currentQuestion().type.toLowerCase()) {
@@ -34,7 +33,7 @@
           }
         }
 
-        <h1 (click)="next()">go next</h1>
+        <h1 (click)="next()" [ngClass]="!isDisabledBtn()? 'text-bg-primary' : 'text-bg-secondary'">go next</h1>
       } @else {
         <h2 class="my-5">No available questions!</h2>
         <button (click)="backToCategories()" class="btn btn-warning btn-lg">Back to categories</button>
@@ -43,3 +42,4 @@
     </div>
   </div>
 </div>
+

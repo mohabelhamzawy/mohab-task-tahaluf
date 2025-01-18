@@ -145,26 +145,40 @@ export const QuestionsData =
     },
     {
       "category": "General Knowledge",
-      "type": "multiple",
-      "difficulty": "easy",
-      "question": "Which is the largest continent by population?",
-      "correct_answer": "Asia",
-      "incorrect_answers": ["Africa", "Europe", "North America"]
-    },
-    {
-      "category": "General Knowledge",
-      "type": "multiple",
+      "type": "freetext",
       "difficulty": "medium",
-      "question": "Which country is known as the Land of the Rising Sun?",
-      "correct_answer": "Japan",
-      "incorrect_answers": ["China", "South Korea", "Thailand"]
+      "question": "22222 What is the tallest mountain in the world?",
+      "correct_answer": "Mount Everest"
     },
     {
       "category": "General Knowledge",
-      "type": "multiple",
-      "difficulty": "easy",
-      "question": "Which planet is known as the Red Planet?",
-      "correct_answer": "Mars",
-      "incorrect_answers": ["Venus", "Earth", "Saturn"]
-    }
+      "type": "freetext",
+      "difficulty": "medium",
+      "question": "1111 What is the tallest mountain in the world?",
+      "correct_answer": "Mount Everest"
+    },
+    // {
+    //   "category": "General Knowledge",
+    //   "type": "multiple",
+    //   "difficulty": "easy",
+    //   "question": "Which is the largest continent by population?",
+    //   "correct_answer": "Asia",
+    //   "incorrect_answers": ["Africa", "Europe", "North America"]
+    // },
+    // {
+    //   "category": "General Knowledge",
+    //   "type": "multiple",
+    //   "difficulty": "medium",
+    //   "question": "Which country is known as the Land of the Rising Sun?",
+    //   "correct_answer": "Japan",
+    //   "incorrect_answers": ["China", "South Korea", "Thailand"]
+    // },
+    // {
+    //   "category": "General Knowledge",
+    //   "type": "multiple",
+    //   "difficulty": "easy",
+    //   "question": "Which planet is known as the Red Planet?",
+    //   "correct_answer": "Mars",
+    //   "incorrect_answers": ["Venus", "Earth", "Saturn"]
+    // }
   ];
