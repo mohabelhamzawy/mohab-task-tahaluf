@@ -2,6 +2,7 @@ import {Injectable, linkedSignal, signal} from '@angular/core';
 import {QuestionsData} from '../api/questionsApi';
 import {QuestionDifficulty, QuestionPoint, QuestionType} from '../enums/question.enum';
 import {QuestionUpdates} from '../types/general.type';
+import {LottiePath} from '../enums/lottie.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class QuestionsService {
   #apiData = QuestionsData;
   #questionsArray: any[] = [];
   #questionsMap = signal<any>(new Map());
+  #answerStatus = signal<{ isCorrect?: boolean, path?: LottiePath } | null>(null);
 
   // Progressbar Data
   #totalScore = signal<number>(0);
@@ -88,12 +90,7 @@ export class QuestionsService {
         if (item.id === currentAnswer.id) {
           const resolvedQuestion = Object.assign(item, {...currentAnswer});
 
-          this.setTotalPoints(
-            resolvedQuestion.userAnswer.toLowerCase() === resolvedQuestion.correct_answer.toLowerCase()
-              ? resolvedQuestion.score
-              : 0
-          );
-
+          this.#handleAnswer(resolvedQuestion);
           resolvedQuestion.isResolved = true;
 
           return resolvedQuestion;
@@ -133,6 +130,13 @@ export class QuestionsService {
 
 
 
+  // Answers Methods
+  getAnswerStatus() {
+    return this.#answerStatus
+  }
+
+
+
   // Points Methods
   getTotalPoints() {
     return this.#percentageScore;
@@ -159,5 +163,20 @@ export class QuestionsService {
           : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of subsequent words
       )
       .join('')
+  }
+
+  #handleAnswer(question: any) {
+    const statusDuration = 2300;
+    const isCorrect = question.userAnswer.toLowerCase() === question.correct_answer.toLowerCase();
+    this.setTotalPoints(isCorrect ? question.score : 0);
+
+    this.#answerStatus.set({
+      isCorrect,
+      path: isCorrect ? LottiePath.CORRECT : LottiePath.WRONG,
+    });
+
+    setTimeout(() => {
+      this.#answerStatus.set(null);
+    }, statusDuration);
   }
 }

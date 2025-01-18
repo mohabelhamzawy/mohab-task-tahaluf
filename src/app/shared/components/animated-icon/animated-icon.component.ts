@@ -12,21 +12,21 @@ import {AnimationOptions, LottieComponent} from 'ngx-lottie';
 export class AnimatedIconComponent {
   // Inputs
   path = input<string>();
+  loop = input<boolean | number>(true);
 
   // Data
   options: AnimationOptions = {
     path: this.path(),
+    loop:this.loop()
   };
 
   constructor() {
     effect(() => {
       this.options = {
-        path: this.path()
+        path: this.path(),
+        loop: this.loop()
       };
     });
   }
 
-  // animationCreated(animationItem: AnimationItem): void {
-  //   console.log(animationItem);
-  // }
 }

@@ -1,0 +1,11 @@
+.answer-status {
+  $size: 140px;
+  width: $size;
+  height: $size;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  transform: translateY(0);
+  pointer-events: none;
+  user-select: none;
+}
