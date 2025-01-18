@@ -1,6 +1,6 @@
-<ul class="row">
+<ul class="row mb-5">
   @for (option of options(); track option; let i = $index) {
-    <li class="col-6" (click)="sendAnswer(option, questionType(), i)">
+    <li class="col-6 mt-4" (click)="sendAnswer(option, questionType(), i)">
       <div class="item" [class.active]="i === selectedAnswerIndex()">
         <strong>{{option | titlecase}}</strong>
       </div>

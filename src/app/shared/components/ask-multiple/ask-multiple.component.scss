@@ -6,8 +6,12 @@ ul {
 }
 
 .item {
+  height: 100%;
   margin: 1rem;
-  padding: 20px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #ddd;
   user-select: none;
   transition: color 0.2s linear;
