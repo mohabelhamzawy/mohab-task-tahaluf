@@ -13,7 +13,6 @@ import {NgClass, TitleCasePipe} from '@angular/common';
   imports: [
     AskMultipleComponent,
     AskFreetextComponent,
-    NgClass,
     TitleCasePipe
   ],
   templateUrl: './quiz-ask.component.html',
@@ -40,7 +39,6 @@ export class QuizAskComponent implements OnInit {
       next: (params: any) => {
         if (params && params.category) {
           this.availableQuestions.set([...this.#questionsService.getCategoryQuestions(params.category)]);
-          console.log('mmmmmmmmmmmm', this.availableQuestions());
         }
       }
     })

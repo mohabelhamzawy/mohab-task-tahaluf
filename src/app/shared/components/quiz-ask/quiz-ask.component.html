@@ -35,7 +35,9 @@
           }
         }
 
-        <h1 (click)="next()" [ngClass]="!isDisabledBtn()? 'text-bg-primary' : 'text-bg-secondary'">go next</h1>
+        <div (click)="next()" [class.disabled]="isDisabledBtn()" class="btn-next">
+          <span>N  E  X  T</span>
+        </div>
       } @else {
         <h2 class="my-5">No available questions!</h2>
         <button (click)="backToCategories()" class="btn btn-warning btn-lg">Back to categories</button>
