@@ -1,4 +1,4 @@
-import {Component, input, model} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {TitleCasePipe} from '@angular/common';
 
 @Component({
@@ -11,11 +11,12 @@ import {TitleCasePipe} from '@angular/common';
 })
 export class AskMultipleComponent {
   options = input<string[]>()
-  click = model<string>('')
+  answerValue = output<string>();
+  selectedIndex: number = NaN;
 
 
-  next(valueName: string) {
-    console.log('clicked')
-    this.click.update(val => valueName);
+  sendAnswer(answer: string, index: number) {
+    this.answerValue.emit(answer);
+    this.selectedIndex = index;
   }
 }

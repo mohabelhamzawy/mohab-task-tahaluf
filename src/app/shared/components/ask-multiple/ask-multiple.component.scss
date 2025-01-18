@@ -9,9 +9,15 @@ ul {
   margin: 1rem;
   padding: 20px;
   background-color: #ddd;
+  border: 2px solid transparent;
   user-select: none;
 
-&:hover {
-  cursor: pointer;
-}
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.active {
+    color: red;
+    border-color: red;
+  }
 }

@@ -1,9 +1,7 @@
-
-
 <ul class="row">
-  @for (option of options(); track option) {
-    <li class="col-6" (click)="next(option)">
-      <div class="item">{{option | titlecase}}</div>
+  @for (option of options(); track option; let i = $index) {
+    <li class="col-6" (click)="sendAnswer(option, i)">
+      <div class="item" [class.active]="i === selectedIndex">{{option | titlecase}}</div>
     </li>
   }
 </ul>
