@@ -9,15 +9,34 @@ ul {
   margin: 1rem;
   padding: 20px;
   background-color: #ddd;
-  border: 2px solid transparent;
   user-select: none;
+  transition: all 0.2s linear;
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: #333;
+    position: absolute;
+    inset: 0 0 0 auto;
+    transition: all 0.45s ease-out;
+    z-index: -1;
+  }
 
   &:hover {
     cursor: pointer;
+    color: #fff;
+
+    &::before {
+      width: 100%;
+    }
   }
 
   &.active {
-    color: red;
-    border-color: red;
+    color: white;
+    background-color: #333;
   }
 }
