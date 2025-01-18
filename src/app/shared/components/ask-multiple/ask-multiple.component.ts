@@ -11,11 +11,15 @@ import {AnswerEmitter} from '../../../core/types/general.type';
   styleUrl: './ask-multiple.component.scss'
 })
 export class AskMultipleComponent {
-  options = input<string[]>()
-  answerValue = output<AnswerEmitter>();
-  selectedIndex = input<number>(NaN)
+  // Inputs
+  options = input<string[]>();
+  questionType = input<string>('');
+  selectedAnswerIndex = input<number>(NaN);
 
-  sendAnswer(answer: string, index: number) {
-    this.answerValue.emit({answer, index});
+  // Outputs
+  answerValue = output<AnswerEmitter>();
+
+  sendAnswer(answer: string, type: string, index: number) {
+    this.answerValue.emit({answer, type, index});
   }
 }

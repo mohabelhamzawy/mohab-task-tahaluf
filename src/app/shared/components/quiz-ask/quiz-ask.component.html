@@ -4,30 +4,37 @@
 
       @if (availableQuestions().length) {
         <h4 class="my-4">{{ currentQuestion().question }}</h4>
-        <h1 (click)="update()" [ngClass]="stageAnswer()? 'text-bg-primary' : 'text-bg-secondary'">go next</h1>
+        <h1 (click)="next()" [ngClass]="!isDisabledBtn()? 'text-bg-primary' : 'text-bg-secondary'">go next</h1>
         <h3>correct : {{currentQuestion().correct_answer}}</h3>
 
         @switch (currentQuestion().type.toLowerCase()) {
           @case (QuestionType.MULTIPLE) {
             <app-ask-multiple
               [options]="currentQuestion().options"
+              [questionType]="QuestionType.MULTIPLE"
               (answerValue)="setAnswerValue($event)"
-              [selectedIndex]="currentAnswerIndex()"
-            ></app-ask-multiple>
+              [selectedAnswerIndex]="currentAnswerIndex()"
+            />
           }
 
           @case (QuestionType.BOOLEAN) {
             <app-ask-multiple
               [options]="currentQuestion().options"
+              [questionType]="QuestionType.BOOLEAN"
               (answerValue)="setAnswerValue($event)"
-              [selectedIndex]="currentAnswerIndex()"
-            ></app-ask-multiple>
+              [selectedAnswerIndex]="currentAnswerIndex()"
+            />
           }
 
-          @case (QuestionType.FREETEXT) { <app-ask-freetext></app-ask-freetext> }
+          @case (QuestionType.FREETEXT) {
+            <app-ask-freetext
+              (answerValue)="setAnswerValue($event)"
+              [(inputValue)]="freeTextValue"
+            />
+          }
         }
 
-        <h1 (click)="update()">go next</h1>
+        <h1 (click)="next()">go next</h1>
       } @else {
         <h2 class="my-5">No available questions!</h2>
         <button (click)="backToCategories()" class="btn btn-warning btn-lg">Back to categories</button>

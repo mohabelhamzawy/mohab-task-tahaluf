@@ -28,8 +28,9 @@ export class QuizAskComponent implements OnInit {
   availableQuestions = signal<any[]>([]);
   currentQuestionIndex = signal<number>(0);
   currentQuestion = linkedSignal<any>(() => this.availableQuestions()[this.currentQuestionIndex()]);
-
+  isDisabledBtn = signal<boolean>(true);
   currentAnswerIndex = signal<number>(NaN);
+  freeTextValue = signal<string>('');
 
   stageAnswer = signal<QuestionUpdates | null> (null)
 
@@ -48,30 +49,44 @@ export class QuizAskComponent implements OnInit {
     this.#router.navigate([RouterUrl.QUIZ])
   }
 
-  update() {
-    if ( this.stageAnswer() ) {
+  next() {
+    if ( this.stageAnswer() && !this.isDisabledBtn() ) {
       this.#questionsService.updateQuestions(this.stageAnswer());
 
       if ( this.currentQuestionIndex() < this.availableQuestions().length - 1 ) {
-        this.currentQuestionIndex.update(index => index+1)
+        this.currentQuestionIndex.update(index => index + 1)
       } else {
         this.backToCategories();
       }
+
+      if (this.currentQuestion().type === QuestionType.FREETEXT) {
+        this.freeTextValue.set('');
+      }
     }
 
-    this.stageAnswer.set(null);
-    this.currentAnswerIndex.set(NaN);
+    this.#removeAction();
   }
 
   setAnswerValue(event: AnswerEmitter) {
-    const data: QuestionUpdates = {
-      category: this.currentQuestion().category,
-      id: this.currentQuestion().id,
-      score: this.currentQuestion().score,
-      userAnswer: event.answer.toLowerCase()
-    };
+    if (event.answer.length) {
+      const data: QuestionUpdates = {
+        category: this.currentQuestion().category,
+        id: this.currentQuestion().id,
+        score: this.currentQuestion().score,
+        userAnswer: event.answer.toLowerCase()
+      };
 
-    this.stageAnswer.set(data);
-    this.currentAnswerIndex.set(event.index);
+      this.stageAnswer.set(data);
+      this.isDisabledBtn.set(false);
+      this.currentAnswerIndex.set(event.index ? event.index : 0 );
+    } else {
+      this.#removeAction();
+    }
+  }
+
+  #removeAction() {
+    this.stageAnswer.set(null);
+    this.isDisabledBtn.set(true);
+    this.currentAnswerIndex.set(NaN);
   }
 }

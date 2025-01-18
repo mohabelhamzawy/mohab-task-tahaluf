@@ -1,3 +1,5 @@
+import {QuestionType} from '../enums/question.enum';
+
 export type QuestionUpdates = {
   category: string;
   score: string | number;
@@ -7,5 +9,6 @@ export type QuestionUpdates = {
 
 export type AnswerEmitter = {
   answer: string,
-  index: number
+  type?: string | QuestionType,
+  index?: number
 };
