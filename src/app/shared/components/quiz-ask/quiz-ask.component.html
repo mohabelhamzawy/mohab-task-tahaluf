@@ -2,46 +2,50 @@
   <div class="row justify-content-center">
     <div class="col-md-12 text-center">
 
-      @if (availableQuestions().length) {
-        <h4 class="my-4">{{ currentQuestion().question }}</h4>
-        <div class="hint-answer">
-          <p class="mb-0">{{currentQuestion().correct_answer | titlecase}}</p>
-        </div>
+      <span class="btn-back" (click)="backToCategories()"><i class="bi bi-arrow-left me-2"></i> Categories</span>
 
-        @switch (currentQuestion().type.toLowerCase()) {
-          @case (QuestionType.MULTIPLE) {
-            <app-ask-multiple
-              [options]="currentQuestion().options"
-              [questionType]="QuestionType.MULTIPLE"
-              (answerValue)="setAnswerValue($event)"
-              [selectedAnswerIndex]="currentAnswerIndex()"
-            />
+      <div class="question-box">
+        @if (availableQuestions().length) {
+          <h4 class="my-4">{{ currentQuestion().question }}</h4>
+          <div class="hint-answer">
+            <p class="mb-0">{{currentQuestion().correct_answer | titlecase}}</p>
+          </div>
+
+          @switch (currentQuestion().type.toLowerCase()) {
+            @case (QuestionType.MULTIPLE) {
+              <app-ask-multiple
+                [options]="currentQuestion().options"
+                [questionType]="QuestionType.MULTIPLE"
+                (answerValue)="setAnswerValue($event)"
+                [selectedAnswerIndex]="currentAnswerIndex()"
+              />
+            }
+
+            @case (QuestionType.BOOLEAN) {
+              <app-ask-multiple
+                [options]="currentQuestion().options"
+                [questionType]="QuestionType.BOOLEAN"
+                (answerValue)="setAnswerValue($event)"
+                [selectedAnswerIndex]="currentAnswerIndex()"
+              />
+            }
+
+            @case (QuestionType.FREETEXT) {
+              <app-ask-freetext
+                (answerValue)="setAnswerValue($event)"
+                [(inputValue)]="freeTextValue"
+              />
+            }
           }
 
-          @case (QuestionType.BOOLEAN) {
-            <app-ask-multiple
-              [options]="currentQuestion().options"
-              [questionType]="QuestionType.BOOLEAN"
-              (answerValue)="setAnswerValue($event)"
-              [selectedAnswerIndex]="currentAnswerIndex()"
-            />
-          }
-
-          @case (QuestionType.FREETEXT) {
-            <app-ask-freetext
-              (answerValue)="setAnswerValue($event)"
-              [(inputValue)]="freeTextValue"
-            />
-          }
+          <div (click)="next()" [class.disabled]="isDisabledBtn()" class="btn-next">
+            <span>N  E  X  T</span>
+          </div>
+        } @else {
+          <h2 class="my-5">No available questions!</h2>
+          <button (click)="backToCategories()" class="btn btn-warning btn-lg">Back to categories</button>
         }
-
-        <div (click)="next()" [class.disabled]="isDisabledBtn()" class="btn-next">
-          <span>N  E  X  T</span>
-        </div>
-      } @else {
-        <h2 class="my-5">No available questions!</h2>
-        <button (click)="backToCategories()" class="btn btn-warning btn-lg">Back to categories</button>
-      }
+      </div>
 
     </div>
   </div>
